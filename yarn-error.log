@@ -1,0 +1,48 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe F:\应用程序\yarn\bin\yarn.js run doc:dev
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;F:\应用程序\yarn\bin\;C:\Python27;F:\应用程序\Git\cmd;C:\Users\xxzz\AppData\Local\atom\bin;C:\Python27\Scripts;C:\WINDOWS\System32\OpenSSH\;F:\应用程序\visual studio code\Microsoft VS Code\bin;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\nodejs\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;F:\应用程序\nodejs\;F:\;用程序\yarn\bin\;C:;Python27;F:\应用程序\Git\cmd;C:\Users\xxzz\AppData\Local\Microsoft\WindowsApps;C:\Users\xxzz\AppData\Local\Yarn\bin;C:\Python27;F:\应用程序\visual studio code\Microsoft VS Code\bin;C:\Users\xxzz\AppData\Local\Microsoft\WindowsApps;;C:\Users\xxzz\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\xxzz\AppData\Roaming\npm
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  8.11.4
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "vue-doc",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "doc:dev":"vuepress dev docs",
+      "doc:build":"vuepress build docs"    
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Command failed.
+  Exit code: 1
+  Command: C:\WINDOWS\system32\cmd.exe
+  Arguments: /d /s /c vuepress dev docs
+  Directory: E:\vue-doc
+  Output:
+  
+      at ProcessTermError.MessageError (F:\应用程序\yarn\lib\cli.js:186:110)
+      at new ProcessTermError (F:\应用程序\yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (F:\应用程序\yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
