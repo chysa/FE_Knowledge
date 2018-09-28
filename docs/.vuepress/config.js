@@ -17,7 +17,7 @@ module.exports = {
       {
         text: 'Vue',
         items: [
-          {text: 'Vue源码解析',link: '/VueSourceAnalysis/'}
+          { text: 'Vue源码解析', link: '/VueSourceAnalysis/'}
         ]
       }
     ],
@@ -133,6 +133,25 @@ module.exports = {
             '84vue-codegen',
             '85vue-vdom',
             '86vue-vdom-patch'
+          ]
+        },
+        {
+          title: '扩展',
+          children: [
+            'vue-hoc'
+          ]
+        },
+        {
+          title: '附录',
+          children: [
+            'vue-prototype',
+            'vue-global-api',
+            'vue-ins',
+            'core-util',
+            'web-util',
+            'shared-util',
+            'compiler-options',
+            'ast'
           ]
         }
       ]
