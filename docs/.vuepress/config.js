@@ -7,22 +7,103 @@ module.exports = {
   themeConfig: {
     nav: [
       {
+        text: '前端基础',
+        items: [
+          { text: '计算机基础', link: '/Base/Cpu/network'},
+          { text: 'Browser', link: '/Base/Browser/browser'},
+          { text: '性能', link: '/Base/Performance/performance' },
+          { text: '安全', link: '/Base/Safety/safety' },
+          { text: '小程序', link: '/Base/Mp/mp' },
+          { text: '框架通识', link: '/Base/Framework/framework' }
+        ]
+      },
+      {
         text: 'JavaScript',
         items: [
-          { text: 'ES6', link: '/ES6/' },
-          { text: 'JavaScript专题', link: '/Special/' },
-          { text: '深入JavaScript', link: '/Thorough/' }
+          { text: 'JavaScript基础',link: '/JavaScript/Base/'},
+          { text: 'ES6', link: '/JavaScript/ES6/' },
+          { text: 'JavaScript专题', link: '/JavaScript/Special/' },
+          { text: '深入JavaScript', link: '/JavaScript/Thorough/' }
         ]
       },
       {
         text: 'Vue',
         items: [
-          { text: 'Vue源码解析', link: '/VueSourceAnalysis/'}
+          { text: 'Vue基础', link: '/Vue/Base/vue' },
+          { text: 'Vue源码解析', link: '/Vue/VueSourceAnalysis/'}
         ]
       }
     ],
     sidebar: {
-      '/ES6/': [
+      '/Base/Cpu/': [
+        {
+          title: '网络',
+          children: [
+            'network'
+          ]
+        },
+        {
+          title: '数据结构',
+          children: [
+            'dataStruct'
+          ]
+        },
+        {
+          title: '算法',
+          children: [
+            'algorithm'
+          ]
+        }
+      ],
+      '/Base/Browser/': [
+        {
+          title: 'Browser',
+          children: [
+            'browser'
+          ]
+        }
+      ],
+      '/Base/Performance/': [
+        {
+          title: '性能',
+          children: [
+            'performance'
+          ]
+        }
+      ],
+      '/Base/Safety/': [
+        {
+          title: '安全',
+          children: [
+            'safety'
+          ]
+        }
+      ],
+      '/Base/Mp/': [
+        {
+          title: '小程序',
+          children: [
+            'mp'
+          ]
+        }
+      ],
+      '/Base/Framework/': [
+        {
+          title: '框架通识',
+          children: [
+            'framework'
+          ]
+        }
+      ],
+      '/JavaScript/Base/': [
+        {
+          title: 'JavaScript基础',
+          children: [
+            'js'
+          ]
+        }
+      ],
+      '/JavaScript/ES6/': [
         {
           title: 'ES6',
           children: [
@@ -60,7 +141,7 @@ module.exports = {
           ]
         }
       ],
-      '/Special/': [
+      '/JavaScript/Special/': [
         {
           title: 'JavaScript专题',
           children: [
@@ -68,8 +149,8 @@ module.exports = {
             '跟着underscore学防抖',
             '跟着underscore学节流',
             '数组去重',
-            '类型判断(上)',
-            '类型判断(下)',
+            '类型判断上',
+            '类型判断下',
             '深浅拷贝',
             '从零实现jQuery的extend',
             '如何求数组的最大值和最小值',
@@ -88,7 +169,7 @@ module.exports = {
           ]
         }
       ],
-      '/Thorough/': [
+      '/JavaScript/Thorough/': [
         {
           title: '深入JavaScript',
           children: [
@@ -111,8 +192,15 @@ module.exports = {
           ]
         }
       ],
-
-      '/VueSourceAnalysis/': [
+      '/Vue/Base/': [
+        {
+          title: 'Vue基础',
+          children: [
+            'vue'
+          ]
+        }
+      ],
+      '/Vue/VueSourceAnalysis/': [
         {
           title: 'Vue源码解析',
           children: [
