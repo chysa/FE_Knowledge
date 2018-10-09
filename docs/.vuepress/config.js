@@ -16,7 +16,7 @@ module.exports = {
 			},
 			{
 				text: 'Vue',
-				items: [{ text: 'Vue基础', link: '/Vue/Base/vue' }, { text: 'Vue源码解析', link: '/Vue/VueSourceAnalysis/' }]
+				items: [{ text: 'Vue基础', link: '/Vue/Base/vue' }, { text: 'Vue源码解析', link: '/Vue/VueSourceAnalysis/' }, { text: 'Vue源码浅析', link: '/Vue/VueSourceAnalysis2/' }]
 			},
 			{
 				text: 'Music',
@@ -110,6 +110,12 @@ module.exports = {
 				{
 					title: '附录',
 					children: ['vue-prototype', 'vue-global-api', 'vue-ins', 'core-util', 'web-util', 'shared-util', 'compiler-options', 'ast']
+				}
+			],
+			'/Vue/VueSourceAnalysis2/': [
+				{
+					title: 'Vue源码解析',
+					children: ['', '1造物创世', '2initMixin(上)', '3initMixin(下)', '4template的编译parse', '5template的编译optimize', '6template的编译generate', '7render到VNode的生成', '8依赖收集与监听', '9VirtualDOM与path']
 				}
 			],
 			'/Music/': [
