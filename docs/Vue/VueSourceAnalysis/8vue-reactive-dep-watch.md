@@ -1,6 +1,6 @@
 # 渲染函数的观察者与进阶的数据响应系统
 
-实际上在 [揭开数据响应系统的面纱](./art/7vue-reactive.md) 一节中我们仅仅学习了数据响应系统的部分内容，比如当时我们做了一个合理的假设，即：`dep.depend()` 这句代码的执行就代表观察者被收集了，而 `dep.notify()` 的执行则代表触发了响应，但是我们并没有详细讲解 `dep` 本身是什么东西，我们只是把它当做了一个收集依赖的“筐”。除此之外我们也没有讲解数据响应系统中另一个很重要的部分，即 `Watcher` ，我们知道正是由于 `Watcher` 对所观察字段的求值才触发了字段的 `get`，从而才有了收集到该观察者的机会。本节我们的目标就是深入 `Vue` 中有关于这部分的具体源码，看一看这里面的秘密。
+实际上在 `揭开数据响应系统的面纱` 一节中我们仅仅学习了数据响应系统的部分内容，比如当时我们做了一个合理的假设，即：`dep.depend()` 这句代码的执行就代表观察者被收集了，而 `dep.notify()` 的执行则代表触发了响应，但是我们并没有详细讲解 `dep` 本身是什么东西，我们只是把它当做了一个收集依赖的“筐”。除此之外我们也没有讲解数据响应系统中另一个很重要的部分，即 `Watcher` ，我们知道正是由于 `Watcher` 对所观察字段的求值才触发了字段的 `get`，从而才有了收集到该观察者的机会。本节我们的目标就是深入 `Vue` 中有关于这部分的具体源码，看一看这里面的秘密。
 
 为了更好地讲解 `Dep` 和 `Watcher`，我们需要选择一个合适的切入点，这个切入点就是 `Vue.prototype._init` 函数。为什么是 `Vue.prototype._init` 呢？因为数据响应系统本身的切入点就是 `initState` 函数，而 `initState` 函数的调用就在 `_init` 函数中。现在我们把视线重新转移到 `_init` 函数，然后 **试图从 `渲染(render)` -> `重新渲染(re-render)` 的过程探索数据响应系统更深层次的内容**。
 
@@ -33,7 +33,7 @@ Vue.prototype._init = function (options?: Object) {
 
 以上是简化后的代码，注意高亮的那一句：`vm.$mount(vm.$options.el)`，这句代码是 `_init` 函数的最后一句代码，在这句代码执行之前完成了所有初始化的工作，虽然我们目前对初始化工作还有很多不了解的地方，不过没关系，现在我们就假设已经完成了所有初始化的工作，然后开始我们的探索，不过在这之前我们需要先了解一下 `$mount` 函数是如何将组件挂载到给定元素的。
 
-大家还记得 `$mount` 函数定义在哪里吗？我们在 [Vue 构造函数](./art/2vue-constructor.md) 一节中，在整理 `Vue` 构造函数的时候发现 `$mount` 的定义出现在两个地方，第一个地方是 `platforms/web/runtime/index.js` 文件，如下：
+大家还记得 `$mount` 函数定义在哪里吗？我们在 Vue 构造函数 一节中，在整理 `Vue` 构造函数的时候发现 `$mount` 的定义出现在两个地方，第一个地方是 `platforms/web/runtime/index.js` 文件，如下：
 
 ```js
 Vue.prototype.$mount = function (
@@ -51,7 +51,7 @@ Vue.prototype.$mount = function (
 el = el && inBrowser ? query(el) : undefined
 ```
 
-首先检测是否传递了 `el` 选项，如果传递了 `el` 选项则会接着判断 `inBrowser` 是否为真，即当前宿主环境是否是浏览器，如果在浏览器中则将 `el` 透传给 `query` 函数并用返回值重写 `el` 变量，否则 `el` 将被重写为 `undefined`。其中 [query](../appendix/web-util.md#query) 函数来自 `src/platforms/web/util/index.js` 文件，用来根据给定的参数在 `DOM` 中查找对应的元素并返回。总之如果在浏览器环境下，那么 `el` 变量将存储着 `DOM` 元素(理想情况下)。
+首先检测是否传递了 `el` 选项，如果传递了 `el` 选项则会接着判断 `inBrowser` 是否为真，即当前宿主环境是否是浏览器，如果在浏览器中则将 `el` 透传给 `query` 函数并用返回值重写 `el` 变量，否则 `el` 将被重写为 `undefined`。其中 query函数来自 `src/platforms/web/util/index.js` 文件，用来根据给定的参数在 `DOM` 中查找对应的元素并返回。总之如果在浏览器环境下，那么 `el` 变量将存储着 `DOM` 元素(理想情况下)。
 
 接着来到 `$mount` 函数的第二句代码：
 
@@ -154,7 +154,7 @@ const idToTemplate = cached(id => {
 })
 ```
 
-如上代码所示 `idToTemplate` 是通过 `cached` 函数创建的。可以在附录 [shared/util.js 文件工具方法全解](../appendix/shared-util.md#cached) 中查看关于 `cached` 函数的讲解，该函数的作用是通过缓存来避免重复求值，提升性能。但 `cached` 函数并不改变原函数的行为，很显然原函数的功能是返回指定元素的 `innerHTML` 字符串。
+如上代码所示 `idToTemplate` 是通过 `cached` 函数创建的。可以在附录 shared/util.js 文件工具方法全解中查看关于 `cached` 函数的讲解，该函数的作用是通过缓存来避免重复求值，提升性能。但 `cached` 函数并不改变原函数的行为，很显然原函数的功能是返回指定元素的 `innerHTML` 字符串。
 
 `getOuterHTML` 函数的源码如下：
 
@@ -232,7 +232,7 @@ if (template) {
 }
 ```
 
-这两段高亮的代码是用来统计编译器性能的，我们在 `Vue.prototype._init` 函数中已经遇到过类似的代码，详细内容可以在 [以一个例子为线索](./art/3vue-example.md) 以及 [perf.js 文件代码说明](../appendix/core-util.md#perf-js-文件代码说明) 这两个章节中查看。
+这两段高亮的代码是用来统计编译器性能的，我们在 `Vue.prototype._init` 函数中已经遇到过类似的代码，详细内容可以在 以一个例子为线索 以及 perf.js 文件代码说明 这两个章节中查看。
 
 最后我们来做一下总结，实际上完整版 `Vue` 的 `$mount` 函数要做的核心事情就是编译模板(`template`)字符串为渲染函数，并将渲染函数赋值给 `vm.$options.render` 选项，这个选项将会在真正挂载组件的 `mountComponent` 函数中。
 
@@ -387,7 +387,7 @@ new Watcher(vm, updateComponent, noop, {
 }, true /* isRenderWatcher */)
 ```
 
-前面说过，这将是我们第一次真正意义上的遇到观察者构造函数 `Watcher`，我们在 [揭开数据响应系统的面纱](./art/7vue-reactive.md) 一章中有提到过，正是因为 `watcher` 对表达式的求值，触发了数据属性的 `get` 拦截器函数，从而收集到了依赖，当数据变化时能够触发响应。在上面的代码中 `Watcher` 观察者实例将对 `updateComponent` 函数求值，我们知道 `updateComponent` 函数的执行会间接触发渲染函数(`vm.$options.render`)的执行，而渲染函数的执行则会触发数据属性的 `get` 拦截器函数，从而将依赖(`观察者`)收集，当数据变化时将重新执行 `updateComponent` 函数，这就完成了重新渲染。同时我们把上面代码中实例化的观察者对象称为 **渲染函数的观察者**。
+前面说过，这将是我们第一次真正意义上的遇到观察者构造函数 `Watcher`，我们在 揭开数据响应系统的面纱一章中有提到过，正是因为 `watcher` 对表达式的求值，触发了数据属性的 `get` 拦截器函数，从而收集到了依赖，当数据变化时能够触发响应。在上面的代码中 `Watcher` 观察者实例将对 `updateComponent` 函数求值，我们知道 `updateComponent` 函数的执行会间接触发渲染函数(`vm.$options.render`)的执行，而渲染函数的执行则会触发数据属性的 `get` 拦截器函数，从而将依赖(`观察者`)收集，当数据变化时将重新执行 `updateComponent` 函数，这就完成了重新渲染。同时我们把上面代码中实例化的观察者对象称为 **渲染函数的观察者**。
 
 ## 初识 Watcher
 
@@ -726,7 +726,7 @@ export function popTarget () {
 }
 ```
 
-在 `src/core/observer/dep.js` 文件中定义了 `Dep` 类，我们在 [揭开数据响应系统的面纱](./art/7vue-reactive.md) 一章中就遇到过 `Dep` 类，当时我们说每个响应式数据的属性都通过闭包引用着一个用来收集属于自身依赖的“筐”，实际上那个“筐”就是 `Dep` 类的实例对象。更多关于 `Dep` 类的内容我们会在合适的地方讲解，现在我们的主要目的是搞清楚 `pushTarget` 函数是做什么的。在上面这段代码中我们可以看到 `Dep` 类拥有一个静态属性，即 `Dep.target` 属性，该属性的初始值为 `null`，其实 `pushTarget` 函数的作用就是用来为 `Dep.target` 属性赋值的，`pushTarget` 函数会将接收到的参数赋值给 `Dep.target` 属性，我们知道传递给 `pushTarget` 函数的参数就是调用该函数的观察者对象，所以 `Dep.target` 保存着一个观察者对象，其实这个观察者对象就是即将要收集的目标。
+在 `src/core/observer/dep.js` 文件中定义了 `Dep` 类，我们在 揭开数据响应系统的面纱 一章中就遇到过 `Dep` 类，当时我们说每个响应式数据的属性都通过闭包引用着一个用来收集属于自身依赖的“筐”，实际上那个“筐”就是 `Dep` 类的实例对象。更多关于 `Dep` 类的内容我们会在合适的地方讲解，现在我们的主要目的是搞清楚 `pushTarget` 函数是做什么的。在上面这段代码中我们可以看到 `Dep` 类拥有一个静态属性，即 `Dep.target` 属性，该属性的初始值为 `null`，其实 `pushTarget` 函数的作用就是用来为 `Dep.target` 属性赋值的，`pushTarget` 函数会将接收到的参数赋值给 `Dep.target` 属性，我们知道传递给 `pushTarget` 函数的参数就是调用该函数的观察者对象，所以 `Dep.target` 保存着一个观察者对象，其实这个观察者对象就是即将要收集的目标。
 
 我们再回到 `this.get()` 方法中，如下是简化后的代码：
 
@@ -989,7 +989,7 @@ removeSub (sub: Watcher) {
 }
 ```
 
-它的内容很简单，接收一个要被移除的观察者作为参数，然后使用 `remove` 工具函数，将该观察者从 `this.subs` 数组中移除。其中 `remove` 工具函数来自 `src/shared/util.js` 文件，可以在 [shared/util.js 文件工具方法全解](../appendix/shared-util.md#remove) 中查看。
+它的内容很简单，接收一个要被移除的观察者作为参数，然后使用 `remove` 工具函数，将该观察者从 `this.subs` 数组中移除。其中 `remove` 工具函数来自 `src/shared/util.js` 文件，可以在 shared/util.js 文件工具方法全解 中查看。
 
 ## 触发依赖的过程
 

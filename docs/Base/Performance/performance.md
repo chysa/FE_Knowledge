@@ -91,7 +91,6 @@ Cache-control: max-age=30
 
 在  HTTP / 2.0 中引入了多路复用，能够让多个请求使用同一个 TCP 链接，极大的加快了网页的加载速度。并且还支持 Header 压缩，进一步的减少了请求的数据大小。
 
-更详细的内容你可以查看 [该小节](../Network/Network-zh.md##http-20)
 
 ## 预加载
 
@@ -117,7 +116,7 @@ Cache-control: max-age=30
 
 # 优化渲染过程
 
-对于代码层面的优化，你可以查阅浏览器系列中的 [相关内容](../Browser/browser-ch.md#渲染机制)。
+对于代码层面的优化，你可以查阅浏览器系列中的 [相关内容](../Browser/browser.md#渲染机制)。
 
 ## 懒执行
 

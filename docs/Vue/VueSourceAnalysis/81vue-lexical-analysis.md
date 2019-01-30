@@ -23,7 +23,7 @@ export const createCompiler = createCompilerCreator(function baseCompile (
 })
 ```
 
-可以看到 `baseCompile` 函数接收两个参数，分别是字符串模板(`template`)和选项参数(`options`)，其中选项参数 `options` 我们已经分析过了，并且我们有对应的附录专门整理编译器的选项参数，可以在 [编译器选项整理](../appendix/compiler-options.md) 中查看。
+可以看到 `baseCompile` 函数接收两个参数，分别是字符串模板(`template`)和选项参数(`options`)，其中选项参数 `options` 我们已经分析过了，并且我们有对应的附录专门整理编译器的选项参数，可以在 `编译器选项整理` 中查看。
 
 `baseCompile` 函数很简短，由三句代码和一个 `return` 语句组成，这三句代码的作用如下：
 
@@ -372,7 +372,7 @@ const encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#10|#9);/g
 
 然后定义了 `reCache` 常量，它被初始化为一个空的 `JSON` 对象字面量。
 
-再往下定义了 `decodingMap` 常量，它也是一个 `JOSN` 对象字面量，其中 `key` 是一些特殊的 `html` 实体，值则是这些实体对应的字符。在 `decodingMap` 常量下面的是两个正则常量：`encodedAttr` 和 `encodedAttrWithNewLines`。可以发现正则 `encodedAttrWithNewLines` 会比 `encodedAttr` 多匹配两个 `html` 实体字符，分别是 `&#10;` 和 `&#9;`。对于 `decodingMap` 以及下面两个正则的作用不知道大家能不能猜得到，其实我们讲解编译器的创建时有讲到 `shouldDecodeNewlines` 和 `shouldDecodeNewlinesForHref` 这两个编译器选项，当时我们就有针对这两个选项的作用做讲解，可以在附录 [platforms/web/util 目录下的工具方法全解](../appendix/web-util.md) 中查看。
+再往下定义了 `decodingMap` 常量，它也是一个 `JOSN` 对象字面量，其中 `key` 是一些特殊的 `html` 实体，值则是这些实体对应的字符。在 `decodingMap` 常量下面的是两个正则常量：`encodedAttr` 和 `encodedAttrWithNewLines`。可以发现正则 `encodedAttrWithNewLines` 会比 `encodedAttr` 多匹配两个 `html` 实体字符，分别是 `&#10;` 和 `&#9;`。对于 `decodingMap` 以及下面两个正则的作用不知道大家能不能猜得到，其实我们讲解编译器的创建时有讲到 `shouldDecodeNewlines` 和 `shouldDecodeNewlinesForHref` 这两个编译器选项，当时我们就有针对这两个选项的作用做讲解，可以在附录 platforms/web/util 目录下的工具方法全解 中查看。
 
 所以这里的常量 `decodingMap` 以及两个正则 `encodedAttr` 和 `encodedAttrWithNewLines` 的作用就是用来完成对 `html` 实体进行解码的。
 
@@ -1150,7 +1150,7 @@ attrs[i] = {
 
 与我们之前所说的一样，`attrs` 数组的每个元素对象只包含两个元素，即属性名 `name` 和属性值 `value`，对于属性名直接从 `args[1]` 中即可获取，但我们发现属性值却没有直接使用前面获取到的 `value`，而是将 `value` 传递给了 `decodeAttr` 函数，并使用该函数的返回值作为最终的属性值。
 
-实际上 `decodeAttr` 函数的作用是对属性值中所包含的 `html` 实体进行解码，将其转换为实体对应的字符。更多关于 `shouldDecodeNewlinesForHref` 与 `shouldDecodeNewlines` 的内容我们曾经提到过，大家可以在附录 [platforms/web/util 目录下的工具方法全解](../appendix/web-util.md) 中找到详细讲解。
+实际上 `decodeAttr` 函数的作用是对属性值中所包含的 `html` 实体进行解码，将其转换为实体对应的字符。更多关于 `shouldDecodeNewlinesForHref` 与 `shouldDecodeNewlines` 的内容我们曾经提到过，大家可以在附录 platforms/web/util 目录下的工具方法全解 中找到详细讲解。
 
 这样 `for` 循环语句块的代码我们就讲完了，在 `for` 循环语句块的下面是这样一段代码：
 

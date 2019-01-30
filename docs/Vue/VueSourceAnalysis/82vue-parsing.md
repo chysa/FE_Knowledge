@@ -1212,7 +1212,7 @@ if (isIE && ns === 'svg') {
 }
 ```
 
-[isIE](../appendix/core-util.md#isie) 函数用来判断当前宿主环境是否是 `IE` 浏览器，如果是 `IE` 浏览器并且当前元素的命名空间为 `svg`，则会调用 `guardIESVGBug` 函数处理当前元素的属性数组 `attrs`，并使用处理后的结果重新赋值给 `attrs` 变量。这看上去像是在处理 `IE` 浏览器中关于 `svg` 标签的 `bug`，实际上确实是这样的，大家可以访问 [IE 11 bug](http://osgeo-org.1560.x6.nabble.com/WFS-and-IE-11-td5090636.html) 了解这个问题的详情，该问题是 `svg` 标签中渲染多余的属性，如下 `svg` 标签：
+isIE 函数用来判断当前宿主环境是否是 `IE` 浏览器，如果是 `IE` 浏览器并且当前元素的命名空间为 `svg`，则会调用 `guardIESVGBug` 函数处理当前元素的属性数组 `attrs`，并使用处理后的结果重新赋值给 `attrs` 变量。这看上去像是在处理 `IE` 浏览器中关于 `svg` 标签的 `bug`，实际上确实是这样的，大家可以访问 [IE 11 bug](http://osgeo-org.1560.x6.nabble.com/WFS-and-IE-11-td5090636.html) 了解这个问题的详情，该问题是 `svg` 标签中渲染多余的属性，如下 `svg` 标签：
 
 ```html
 <svg xmlns:feature="http://www.openplans.org/topp"></svg>

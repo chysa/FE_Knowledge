@@ -234,7 +234,7 @@ elm.innerHTML = 'some text'
 
 由于绑定 `some` 属性的时候使用了 `prop` 修饰符，所以 `some` 属性不会出现在元素描述对象的 `attrs` 数组中，而是会出现在元素描述对象的 `props` 数组中。
 
-第二种是那些比较特殊的属性，在绑定这些属性时，即使没有指定 `prop` 修饰符，但是由于它属于 `Must Use Prop` 的，所以这些属性会被强制添加到元素描述对象的 `props` 数组中，只有那些属性是 `Must Use Prop`，可以查看附录：[mustuseprop](../appendix/web-util.html#mustuseprop)
+第二种是那些比较特殊的属性，在绑定这些属性时，即使没有指定 `prop` 修饰符，但是由于它属于 `Must Use Prop` 的，所以这些属性会被强制添加到元素描述对象的 `props` 数组中，只有那些属性是 `Must Use Prop`，可以查看附录：mustuseprop
 
 ## pre
 

@@ -23,7 +23,7 @@ vm.$options = mergeOptions(
 )
 ```
 
-正是因为上面的代码，使得我们花了大篇章来讲解其内部实现和运作，也就是 [Vue选项的规范化](./vue-normalize.md) 和 [Vue选项的合并](./vue-normalize.md) 这两节所介绍的内容。现在我们已经知道了 `mergeOptions` 函数是如何对父子选项进行合并处理的，也知道了它的作用。
+正是因为上面的代码，使得我们花了大篇章来讲解其内部实现和运作，也就是 `Vue选项的规范化`和 `Vue选项的合并`这两节所介绍的内容。现在我们已经知道了 `mergeOptions` 函数是如何对父子选项进行合并处理的，也知道了它的作用。
 
 我们打开 `core/util/options.js` 文件，找到 `mergeOptions` 函数，看其最后一句代码：
 
@@ -869,7 +869,7 @@ vm.$slots
 vm.$scopedSlots
 ```
 
-我们把这些属性都整理到 [Vue实例的设计](../appendix/vue-ins.md) 中。
+我们把这些属性都整理到 Vue实例的设计中。
 
 再往下是这段代码：
 
@@ -1045,7 +1045,7 @@ if (handlers) {
 handlers[i].call(vm)
 ```
 
-为了保证生命周期钩子函数内可以通过 `this` 访问实例对象，所以使用 `.call(vm)` 执行这些函数。另外由于生命周期钩子函数的函数体是开发者编写的，为了捕获可能出现的错误，使用 `try...catch` 语句块，并在 `catch` 语句块内使用 `handleError` 处理错误信息。其中 `handleError` 来自于 `core/util/error.js` 文件，大家可以在附录 [core/util 目录下的工具方法全解](../appendix/core-util.md) 中查看关于 `handleError` 的讲解。
+为了保证生命周期钩子函数内可以通过 `this` 访问实例对象，所以使用 `.call(vm)` 执行这些函数。另外由于生命周期钩子函数的函数体是开发者编写的，为了捕获可能出现的错误，使用 `try...catch` 语句块，并在 `catch` 语句块内使用 `handleError` 处理错误信息。其中 `handleError` 来自于 `core/util/error.js` 文件，大家可以在附录 core/util 目录下的工具方法全解中查看关于 `handleError` 的讲解。
 
 所以我们发现，对于生命周期钩子的调用，其实就是通过 `this.$options` 访问处理过的对应的生命周期钩子函数数组，遍历并执行它们。原理还是很简单的。
 

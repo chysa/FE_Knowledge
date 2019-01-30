@@ -375,8 +375,6 @@ HTTP 协议是个无状态协议，不会保存状态。
 |     Expires      |         内容的过期时间         |
 |  Last_modified   |       内容的最后修改时间       |
 
-PS：缓存相关已在别的模块中写完，你可以 [阅读该小节](../Performance/performance-ch.md#缓存)
-
 # HTTPS
 
 HTTPS 还是通过了 HTTP 来传输信息，但是信息通过 TLS 协议进行了加密。

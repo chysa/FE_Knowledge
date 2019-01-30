@@ -605,7 +605,7 @@ isProp || (!el.component && platformMustUseProp(el.tag, el.attrsMap.type, name))
 !el.component && platformMustUseProp(el.tag, el.attrsMap.type, name)
 ```
 
-首先 `el.component` 必须为假，这个条件能够保证什么呢？我们知道 `el.component` 属性保存的是标签 `is` 属性的值，如果 `el.component` 属性为假就能够保证标签没有使用 `is` 属性。那么为什么需要这个保证呢？这是因为后边的 [platformMustUseProp](../appendix/web-util.md#mustuseprop) 函数，该函数的讲解可以在附录中查看，总结如下：
+首先 `el.component` 必须为假，这个条件能够保证什么呢？我们知道 `el.component` 属性保存的是标签 `is` 属性的值，如果 `el.component` 属性为假就能够保证标签没有使用 `is` 属性。那么为什么需要这个保证呢？这是因为后边的 `platformMustUseProp` 函数，该函数的讲解可以在附录中查看，总结如下：
 
 * `input,textarea,option,select,progress` 这些标签的 `value` 属性都应该使用元素对象的原生的 `prop` 绑定（除了 `type === 'button'` 之外）
 * `option` 标签的 `selected` 属性应该使用元素对象的原生的 `prop` 绑定
@@ -1287,7 +1287,7 @@ if (!el.component &&
 }
 ```
 
-实际上元素描述对象的 `el.attrs` 数组中所存储的任何属性都会在由虚拟DOM创建真实DOM的过程中使用 `setAttribute` 方法将属性添加到真实DOM元素上，而在火狐浏览器中存在无法通过DOM元素的 `setAttribute` 方法为 `video` 标签添加 `muted` 属性的问题，所以如上代码就是为了解决该问题的，其方案是如果一个属性的名字是 `muted` 并且该标签满足 [platformMustUseProp](../appendix/web-util.md#mustuseprop) 函数(`video` 标签满足)，则会额外调用 `addProp` 函数将属性添加到元素描述对象的 `el.props` 数组中。为什么这么做呢？这是因为元素描述对象的 `el.props` 数组中所存储的任何属性都会在由虚拟DOM创建真实DOM的过程中直接使用真实DOM对象添加，也就是说对于 `<video>` 标签的 `muted` 属性的添加方式为：`videoEl.muted = true`。另外如上代码的注释中已经提供了相应的 `issue` 号：`#6887`，感兴趣的同学可以去看一下。
+实际上元素描述对象的 `el.attrs` 数组中所存储的任何属性都会在由虚拟DOM创建真实DOM的过程中使用 `setAttribute` 方法将属性添加到真实DOM元素上，而在火狐浏览器中存在无法通过DOM元素的 `setAttribute` 方法为 `video` 标签添加 `muted` 属性的问题，所以如上代码就是为了解决该问题的，其方案是如果一个属性的名字是 `muted` 并且该标签满足 `platformMustUseProp` 函数(`video` 标签满足)，则会额外调用 `addProp` 函数将属性添加到元素描述对象的 `el.props` 数组中。为什么这么做呢？这是因为元素描述对象的 `el.props` 数组中所存储的任何属性都会在由虚拟DOM创建真实DOM的过程中直接使用真实DOM对象添加，也就是说对于 `<video>` 标签的 `muted` 属性的添加方式为：`videoEl.muted = true`。另外如上代码的注释中已经提供了相应的 `issue` 号：`#6887`，感兴趣的同学可以去看一下。
 
 ## preTransformNode 前置处理
 
@@ -1343,7 +1343,7 @@ import { createCompiler } from 'compiler/index'
 const { compile, compileToFunctions } = createCompiler(baseOptions)
 ```
 
-如上代码来自 `src/platforms/web/compiler/index.js` 文件，可以看到 `baseOptions` 导入自 `src/platforms/web/compiler/options.js` 文件，对于基本选项的解析我们在 [compile 的作用](./80vue-compiler-start.md#compile-的作用) 一节中做了详细的讲解，并且整理了 [附录/编译器选项](../appendix/compiler-options.md)，如果大家忘记了可以回头查看。
+如上代码来自 `src/platforms/web/compiler/index.js` 文件，可以看到 `baseOptions` 导入自 `src/platforms/web/compiler/options.js` 文件，对于基本选项的解析我们在 `compile 的作用`一节中做了详细的讲解，并且整理了 `附录/编译器选项`，如果大家忘记了可以回头查看。
 
 最终我们了解到编译器选项的 `modules` 选项来 `src/platforms/web/compiler/modules/index.js` 文件导出的一个数组，如下：
 
@@ -2775,4 +2775,4 @@ comment (text: string) {
 
 大家需要注意的是，普通文本节点与注释节点的元素描述对象的类型是一样的，都是 `3`，不同的是注释节点的元素描述对象拥有 `isComment` 属性，并且该属性的值为 `true`，目的就是用来与普通文本节点作区分的。
 
-至此，对于解析器相关的内容我们就全部讲解完毕了，最终解析器把 `Vue` 的模板解析为抽象语法树(`AST`)，强烈建议读完本节的同学能够仔细阅读以下附录 [Vue 模板 AST 详解](../appendix/ast.md)，相信你一定会有更多的收获。
+至此，对于解析器相关的内容我们就全部讲解完毕了，最终解析器把 `Vue` 的模板解析为抽象语法树(`AST`)，强烈建议读完本节的同学能够仔细阅读以下附录 `Vue 模板 AST 详解`，相信你一定会有更多的收获。

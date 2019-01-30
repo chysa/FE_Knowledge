@@ -169,7 +169,7 @@ if (props && hasOwn(props, key)) {
 
 同样的 `Vue` 实例对象除了代理访问 `data` 数据和 `methods` 中的方法之外，还代理访问了 `props` 中的数据，所以上面这段代码的作用是如果发现 `data` 数据字段的 `key` 已经在 `props` 中有定义了，那么就会打印警告。另外这里有一个优先级的关系：**props优先级 > data优先级 > methods优先级**。即如果一个 `key` 在 `props` 中有定义了那么就不能在 `data` 和 `methods` 中出现了；如果一个 `key` 在 `data` 中出现了那么就不能在 `methods` 中出现了。
 
-另外上面的代码中当 `if` 语句的条件不成立，则会判断 `else if` 语句中的条件：`!isReserved(key)`，该条件的意思是判断定义在 `data` 中的 `key` 是否是保留键，大家可以在 [core/util 目录下的工具方法全解](../appendix/core-util.md) 中查看对于 `isReserved` 函数的讲解。`isReserved` 函数通过判断一个字符串的第一个字符是不是 `$` 或 `_` 来决定其是否是保留的，`Vue` 是不会代理那些键名以 `$` 或 `_` 开头的字段的，因为 `Vue` 自身的属性和方法都是以 `$` 或 `_` 开头的，所以这么做是为了避免与 `Vue` 自身的属性和方法相冲突。
+另外上面的代码中当 `if` 语句的条件不成立，则会判断 `else if` 语句中的条件：`!isReserved(key)`，该条件的意思是判断定义在 `data` 中的 `key` 是否是保留键，大家可以在 core/util 目录下的工具方法全解中查看对于 `isReserved` 函数的讲解。`isReserved` 函数通过判断一个字符串的第一个字符是不是 `$` 或 `_` 来决定其是否是保留的，`Vue` 是不会代理那些键名以 `$` 或 `_` 开头的字段的，因为 `Vue` 自身的属性和方法都是以 `$` 或 `_` 开头的，所以这么做是为了避免与 `Vue` 自身的属性和方法相冲突。
 
 如果 `key` 既不是以 `$` 开头，又不是以 `_` 开头，那么将执行 `proxy` 函数，实现实例对象的代理访问：
 
@@ -1443,7 +1443,7 @@ augment(value, arrayMethods, arrayKeys)
 this.observeArray(value)
 ```
 
-首先定义了 `augment` 常量，这个常量的值根据 `hasProto` 的真假而定，如果 `hasProto` 为真则 `augment` 的值为 `protoAugment`，否则值为 `copyAugment`。那么 `hasProto` 是什么呢？大家可以在附录 [core/util 目录下的工具方法全解](../appendix/core-util.md) 中查看其讲解，其实 `hasProto` 是一个布尔值，它用来检测当前环境是否可以使用 `__proto__` 属性，如果 `hasProto` 为真则当前环境支持 `__proto__` 属性，否则意味着当前环境不能够使用 `__proto__` 属性。
+首先定义了 `augment` 常量，这个常量的值根据 `hasProto` 的真假而定，如果 `hasProto` 为真则 `augment` 的值为 `protoAugment`，否则值为 `copyAugment`。那么 `hasProto` 是什么呢？大家可以在附录 core/util 目录下的工具方法全解中查看其讲解，其实 `hasProto` 是一个布尔值，它用来检测当前环境是否可以使用 `__proto__` 属性，如果 `hasProto` 为真则当前环境支持 `__proto__` 属性，否则意味着当前环境不能够使用 `__proto__` 属性。
 
 如果当前环境支持使用 `__proto__` 属性，那么 `augment` 的值是 `protoAugment`，其中 `protoAugment` 就定义在 `Observer` 类的下方。源码如下：
 
@@ -1835,7 +1835,7 @@ ins.arr[0] = 3  // 不能触发响应
 
 ## Vue.set($set) 和 Vue.delete($delete) 的实现
 
-现在我们是时候讲解一下 `Vue.set` 和 `Vue.delete` 函数的实现了，我们知道 `Vue` 数据响应系统的原理的核心是通过 `Object.defineProperty` 函数将数据对象的属性转换为访问器属性，从而使得我们能够拦截到属性的读取和设置，但正如官方文档中介绍的那样，`Vue` 是没有能力拦截到为一个对象(或数组)添加属性(或元素)的，而 `Vue.set` 和 `Vue.delete` 就是为了解决这个问题而诞生的。同时为了方便使用， `Vue` 还在实例对象上定义了 `$set` 和 `$delete` 方法，实际上 `$set` 和 `$delete` 方法仅仅是 `Vue.set` 和 `Vue.delete` 的别名，为了证明这点，我们首先来看看 `$set` 和 `$delete` 的实现，还记得 `$set` 和 `$delete` 方法定义在哪里吗？不记得也没关系，我们可以通过查看附录 [Vue 构造函数整理-原型](../appendix/vue-prototype.md) 找到 `$set` 和 `$delete` 方法的定义位置，我们发现 `$set` 和 `$delete` 定义在 `src/core/instance/state.js` 文件的 `stateMixin` 函数中，如下代码：
+现在我们是时候讲解一下 `Vue.set` 和 `Vue.delete` 函数的实现了，我们知道 `Vue` 数据响应系统的原理的核心是通过 `Object.defineProperty` 函数将数据对象的属性转换为访问器属性，从而使得我们能够拦截到属性的读取和设置，但正如官方文档中介绍的那样，`Vue` 是没有能力拦截到为一个对象(或数组)添加属性(或元素)的，而 `Vue.set` 和 `Vue.delete` 就是为了解决这个问题而诞生的。同时为了方便使用， `Vue` 还在实例对象上定义了 `$set` 和 `$delete` 方法，实际上 `$set` 和 `$delete` 方法仅仅是 `Vue.set` 和 `Vue.delete` 的别名，为了证明这点，我们首先来看看 `$set` 和 `$delete` 的实现，还记得 `$set` 和 `$delete` 方法定义在哪里吗？不记得也没关系，我们可以通过查看附录 Vue 构造函数整理-原型 找到 `$set` 和 `$delete` 方法的定义位置，我们发现 `$set` 和 `$delete` 定义在 `src/core/instance/state.js` 文件的 `stateMixin` 函数中，如下代码：
 
 ```js {4-5}
 export function stateMixin (Vue: Class<Component>) {
@@ -1856,7 +1856,7 @@ export function stateMixin (Vue: Class<Component>) {
 
 可以看到 `$set` 和 `$delete` 的值分别是是 `set` 和 `del`，根据文件头部的引用关系可知 `set` 和 `del` 来自 `src/core/observer/index.js` 文件中定义的 `set` 函数和 `del` 函数。
 
-接着我们再来看看 `Vue.set` 和 `Vue.delete` 函数的定义，如果你同样不记得这两个函数时在哪里定义的也没关系，可以查看附录 [Vue 构造函数整理-全局API](../appendix/vue-global-api.md)，我们发现这两个函数是在 `initGlobalAPI` 函数中定义的，打开 `src/core/global-api/index.js` 文件，找到 `initGlobalAPI` 函数如下：
+接着我们再来看看 `Vue.set` 和 `Vue.delete` 函数的定义，如果你同样不记得这两个函数时在哪里定义的也没关系，可以查看附录 Vue 构造函数整理-全局API，我们发现这两个函数是在 `initGlobalAPI` 函数中定义的，打开 `src/core/global-api/index.js` 文件，找到 `initGlobalAPI` 函数如下：
 
 ```js {4,5}
 export function initGlobalAPI (Vue: GlobalAPI) {
@@ -1893,7 +1893,7 @@ if (process.env.NODE_ENV !== 'production' &&
 }
 ```
 
-该 `if` 语句块的判断条件中包含两个函数，分别是 `isUndef` 和 `isPrimitive`，可以在附录 [shared/util.js 文件工具方法全解](../appendix/shared-util.md) 中找到关于这两个函数的讲解。`isUndef` 函数用来判断一个值是否是 `undefined` 或 `null`，如果是则返回 `true`，`isPrimitive` 函数用来判断一个值是否是原始类型值，如果是则返回 `true`。所以如上代码 `if` 语句块的作用是：**如果 `set` 函数的第一个参数是 `undefined` 或 `null` 或者是原始类型值，那么在非生产环境下会打印警告信息**。这么做是合理的，因为理论上只能为对象(或数组)添加属性(或元素)。
+该 `if` 语句块的判断条件中包含两个函数，分别是 `isUndef` 和 `isPrimitive`，可以在附录 shared/util.js 文件工具方法全解 中找到关于这两个函数的讲解。`isUndef` 函数用来判断一个值是否是 `undefined` 或 `null`，如果是则返回 `true`，`isPrimitive` 函数用来判断一个值是否是原始类型值，如果是则返回 `true`。所以如上代码 `if` 语句块的作用是：**如果 `set` 函数的第一个参数是 `undefined` 或 `null` 或者是原始类型值，那么在非生产环境下会打印警告信息**。这么做是合理的，因为理论上只能为对象(或数组)添加属性(或元素)。
 
 紧接着又是一段 `if` 语句块，如下：
 
@@ -1905,7 +1905,7 @@ if (Array.isArray(target) && isValidArrayIndex(key)) {
 }
 ```
 
-这段代码对 `target` 和 `key` 这两个参数做了校验，如果 `target` 是一个数组，并且 `key` 是一个有效的数组索引，那么就会执行 `if` 语句块的内容。在校验 `key` 是否是有效的数组索引时使用了 `isValidArrayIndex` 函数，可以在附录 [shared/util.js 文件工具方法全解](../appendix/shared-util.md) 中查看详细讲解。也就是说当我们尝试使用 `Vue.set/$set` 为数组设置某个元素值的时候就会执行 `if` 语句块的内容，如下例子：
+这段代码对 `target` 和 `key` 这两个参数做了校验，如果 `target` 是一个数组，并且 `key` 是一个有效的数组索引，那么就会执行 `if` 语句块的内容。在校验 `key` 是否是有效的数组索引时使用了 `isValidArrayIndex` 函数，可以在附录 shared/util.js 文件工具方法全解中查看详细讲解。也就是说当我们尝试使用 `Vue.set/$set` 为数组设置某个元素值的时候就会执行 `if` 语句块的内容，如下例子：
 
 ```js {3,7}
 const ins = new Vue({

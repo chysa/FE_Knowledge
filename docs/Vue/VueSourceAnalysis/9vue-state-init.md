@@ -383,7 +383,7 @@ if (isReservedAttribute(hyphenatedKey) ||
 
 首先使用 `hyphenate` 将 `prop` 的名字转为连字符加小写的形式，并将转换后的值赋值给 `hyphenatedKey` 常量，紧接着又是一个 `if` 条件语句块，其条件是在判断 `prop` 的名字是否是保留的属性(`attribute`)，如果是则会打印警告信息，警告你不能使用保留的属性(`attribute`)名作为 `prop` 的名字。
 
-上面代码中的 `hyphenate` 和 `isReservedAttribute` 函数都来自于 `src/shared/util.js` 文件，可以在附录 [shared/util.js 文件工具方法全解](../appendix/shared-util.md) 中查看讲解。
+上面代码中的 `hyphenate` 和 `isReservedAttribute` 函数都来自于 `src/shared/util.js` 文件，可以在附录 shared/util.js 文件工具方法全解中查看讲解。
 
 接着使用了 `defineReactive` 函数定义 `props` 数据：
 
@@ -1320,7 +1320,7 @@ if ((key in vm) && isReserved(key)) {
 }
 ```
 
-上面代码中首先检测方法名字 `key` 是否已经在组件实例对象 `vm` 中有了定义，并且该名字 `key` 为保留的属性名，什么是保留的属性名呢？根据 [isReserved](../appendix/core-util.md#isreserved) 函数可知以字符 `$` 或 `_` 开头的名字为保留名，如果这两个条件都成立，说明你定义的方法与 `Vue` 原生提供的内置方法冲突，比如：
+上面代码中首先检测方法名字 `key` 是否已经在组件实例对象 `vm` 中有了定义，并且该名字 `key` 为保留的属性名，什么是保留的属性名呢？根据 isReserved 函数可知以字符 `$` 或 `_` 开头的名字为保留名，如果这两个条件都成立，说明你定义的方法与 `Vue` 原生提供的内置方法冲突，比如：
 
 ```js
 methods: {
@@ -1490,7 +1490,7 @@ const keys = hasSymbol
   : Object.keys(inject)
 ```
 
-现在我们知道 `keys` 常量中保存 `inject` 选项对象的每一个键名，但我们注意到这里有一个对 [hasSymbol](../appendix/core-util.md#hassymbol) 的判断，其目的是保证 `Symbol` 类型与 `Reflect.ownKeys` 可用且为宿主环境原生提供，如果 `hasSymbol` 为真，则说明可用，此时会使用 `Reflect.ownKeys` 获取 `inject` 对象中所有可枚举的键名，否则使用 `Object.keys` 作为降级处理。实际上 `Reflect.ownKeys` 配合可枚举过滤等价于 `Object.keys` 与 `Object.getOwnPropertySymbols` 配合可枚举过滤之和，其好处是支持 `Symbol` 类型作为键名，当然了这一切都建立在宿主环境的支持之上，所以 `Vue` 官网中提到了**`inject` 选项对象的属性可以使用 `ES2015 Symbols` 作为 `key`，但是只在原生支持 `Symbol` 和 `Reflect.ownKeys` 的环境下可工作**。
+现在我们知道 `keys` 常量中保存 `inject` 选项对象的每一个键名，但我们注意到这里有一个对 hasSymbol 的判断，其目的是保证 `Symbol` 类型与 `Reflect.ownKeys` 可用且为宿主环境原生提供，如果 `hasSymbol` 为真，则说明可用，此时会使用 `Reflect.ownKeys` 获取 `inject` 对象中所有可枚举的键名，否则使用 `Object.keys` 作为降级处理。实际上 `Reflect.ownKeys` 配合可枚举过滤等价于 `Object.keys` 与 `Object.getOwnPropertySymbols` 配合可枚举过滤之和，其好处是支持 `Symbol` 类型作为键名，当然了这一切都建立在宿主环境的支持之上，所以 `Vue` 官网中提到了**`inject` 选项对象的属性可以使用 `ES2015 Symbols` 作为 `key`，但是只在原生支持 `Symbol` 和 `Reflect.ownKeys` 的环境下可工作**。
 
 回过头来继续看 `resolveInject` 函数的代码，接下来的代码使用 `for` 循环，用来遍历刚刚获取到的 `keys` 数组：
 

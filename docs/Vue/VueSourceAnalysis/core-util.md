@@ -479,11 +479,11 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
 
 ### parsePath
 
-* `parsePath` 函数的源码在 [初始 Watcher](/art/8vue-reactive-dep-watch.html#初识-watcher) 一节中讲解
+* `parsePath` 函数的源码在 初始 Watcher一节中讲解
 
 ## options.js 文件代码说明
 
-* 该文件的讲解集中在 [Vue选项的规范化](../art/4vue-normalize.md) 以及 [Vue选项的合并](../art/5vue-merge.md) 这两个小节中。
+* 该文件的讲解集中在`Vue选项的规范化`以及 `Vue选项的合并`这两个小节中。
 
 ## perf.js 文件代码说明
 

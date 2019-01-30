@@ -879,5 +879,3 @@ function lis(n) {
 - 词频统计
 - 前缀匹配
 
-如果你对于 Trie 树还不怎么了解，可以前往 [这里](../DataStruct/dataStruct-zh.md#trie) 阅读
-
